@@ -4,27 +4,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { graphql } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Carousel } from 'react-bootstrap';
 
 import SEO from 'components/seo';
 import Layout from 'components/layout';
-import FeaturedPost from 'components/featuredPost';
 
 export default function IndexPage({ data }) {
   const {
-    articles: { nodes: articles },
-    images: { nodes: images }
+    articles: { nodes: articles }
   } = data;
-  const findImage = (articleName) =>
-    articleName
-      ? getImage(
-          images.find(
-            (image) => image.relativePath === `articles/${articleName}.png`
-          )?.childImageSharp?.gatsbyImageData
-        )
-      : {};
 
   return (
     <Layout>
@@ -44,18 +33,7 @@ export default function IndexPage({ data }) {
               }
             >
               {articles.map(({ children: [article] }) => (
-                <Carousel.Item key={article.frontmatter.title}>
-                  <FeaturedPost
-                    {...article.frontmatter}
-                    image={
-                      <GatsbyImage
-                        image={findImage(article.parent.relativeDirectory)}
-                        alt={article.frontmatter.title}
-                      />
-                    }
-                    excerpt={article.excerpt}
-                  />
-                </Carousel.Item>
+                <Carousel.Item key={article.frontmatter.title}></Carousel.Item>
               ))}
             </Carousel>
           </Col>
@@ -71,38 +49,9 @@ IndexPage.propTypes = {
 
 export const query = graphql`
   query {
-    articles: allFile(
-      filter: { sourceInstanceName: { eq: "articles" } }
-      sort: { childrenMarkdownRemark: { frontmatter: { date: DESC } } }
-      limit: 5
-    ) {
+    allSubmissionsJson(limit: 100) {
       nodes {
-        children {
-          ... on MarkdownRemark {
-            frontmatter {
-              author
-              path
-              title
-            }
-            excerpt(pruneLength: 400)
-            parent {
-              ... on File {
-                relativeDirectory
-              }
-            }
-          }
-        }
-      }
-    }
-
-    images: allFile(
-      filter: { absolutePath: { regex: "/.*images/articles/.*.png/" } }
-    ) {
-      nodes {
-        relativePath
-        childImageSharp {
-          gatsbyImageData(layout: CONSTRAINED, width: 800)
-        }
+        jsonId
       }
     }
   }
