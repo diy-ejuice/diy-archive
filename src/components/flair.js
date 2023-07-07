@@ -5,15 +5,9 @@ export default function Flair({ text, color }) {
   return text ? (
     <Badge
       bg="none"
-      style={
-        color
-          ? {
-              backgroundColor: color
-            }
-          : {
-              backgroundColor: 'var(--bs-primary-rgb)'
-            }
-      }
+      style={{
+        backgroundColor: color ?? 'rgba(var(--bs-primary-rgb))'
+      }}
     >
       {text}
     </Badge>
