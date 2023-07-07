@@ -11,7 +11,7 @@ export default function Submissions({ submissions }) {
   return (
     <ListGroup>
       {submissions.map((submission) => (
-        <ListGroupItem key={submission.id}>
+        <ListGroupItem key={submission.jsonId}>
           <Row>
             <Col
               xs={1}
