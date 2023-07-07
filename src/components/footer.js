@@ -9,7 +9,8 @@ export default function Footer() {
       <Container>
         <Row>
           <Col md="12" className="text-center">
-            Copyright &copy; {currentYear} DIY Compendium
+            Site copyright &copy; {currentYear} DIY Compendium. Data courtesy of
+            Reddit.
           </Col>
         </Row>
       </Container>

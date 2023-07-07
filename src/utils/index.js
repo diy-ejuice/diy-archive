@@ -1,3 +1,3 @@
 module.exports = {
-  getSubmissionUrl: ({ jsonId }) => `/s/${jsonId}`
+  getSubmissionUrl: ({ jsonId }) => `/submission/${jsonId}`
 };

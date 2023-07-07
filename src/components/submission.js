@@ -1,9 +1,14 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp, faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
-import Layout from './layout';
-import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
+import { format, formatDistanceToNow } from 'date-fns';
+import ReactMarkdown from 'react-markdown';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 
-import Comment from './comment.js';
+import Layout from './layout';
+import Comment from './comment';
+import Flair from './flair';
 
 export default function Submission({ data }) {
   const { submissionsJson: submission } = data;
@@ -15,28 +20,76 @@ export default function Submission({ data }) {
           <Card.Title>
             <Container fluid>
               <Row>
-                <Col xs={12}>
-                  {submission.linkFlair ? (
-                    <Badge color={submission.linkFlairColor ?? '#262323'}>
-                      {submission.linkFlair}
-                    </Badge>
-                  ) : null}
-                  {submission.title}
+                <Col
+                  xs={1}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <FontAwesomeIcon
+                    color="#FF5700"
+                    icon={faArrowUp}
+                    fixedWidth
+                  />{' '}
+                  {submission.score}
                 </Col>
-              </Row>
-              <Row>
-                <Col xs={12}>submitted on DATE by {submission.author}</Col>
+                <Col xs={11}>
+                  <Row>
+                    <Col xs={12}>
+                      <Flair
+                        text={submission.linkFlair}
+                        color={submission.linkFlairColor}
+                      />
+                      {submission.title}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={12} className="small">
+                      submitted{' '}
+                      <span
+                        title={format(
+                          submission.createdAt * 1e3,
+                          'yyyy-MM-dd HH:mm:ss'
+                        )}
+                      >
+                        {formatDistanceToNow(submission.createdAt * 1e3, {
+                          addSuffix: true
+                        })}
+                      </span>{' '}
+                      by {submission.author}
+                      <Flair text={submission.authorFlair} />
+                    </Col>
+                  </Row>
+                </Col>
               </Row>
             </Container>
           </Card.Title>
           <Container>
-            <blockquote>{submission.selftext}</blockquote>
+            {Boolean(submission.selftext) && (
+              <Card body>
+                <ReactMarkdown>{submission.selftext}</ReactMarkdown>
+              </Card>
+            )}
+            {Boolean(submission.url) && (
+              <a
+                href={submission.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="primary">
+                  <FontAwesomeIcon icon={faExternalLink} fixedWidth /> View{' '}
+                  {submission.url}
+                </Button>
+              </a>
+            )}
           </Container>
         </Card>
         <Card body>
           <Card.Title>Comments</Card.Title>
           {submission.comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} />
+            <Comment
+              key={comment.id}
+              comment={comment}
+              submission={submission}
+            />
           ))}
         </Card>
       </Container>
@@ -54,14 +107,42 @@ export const pageQuery = graphql`
       jsonId
       url
       selftext
-      linkFlair
       score
       title
       author
+      authorFlair
+      createdAt
       comments {
         id
         body
         author
+        authorFlair
+        score
+        createdAt
+        replies {
+          id
+          body
+          author
+          authorFlair
+          score
+          createdAt
+          replies {
+            id
+            body
+            author
+            authorFlair
+            score
+            createdAt
+            replies {
+              id
+              body
+              author
+              authorFlair
+              score
+              createdAt
+            }
+          }
+        }
       }
     }
   }
