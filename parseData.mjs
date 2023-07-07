@@ -145,7 +145,9 @@ const splitData = async (subreddit) => {
     const { id, body, parent_id: parentId } = comment;
 
     if (++counter % 1000 === 0) {
-      console.log(`${((counter / comments.length) * 100).toFixed(2)}%`);
+      console.log(
+        `${((counter / comments.length) * 100).toFixed(2)}% parsing comments`
+      );
     }
 
     if (!id || body === '[deleted]') {
@@ -177,8 +179,11 @@ const splitData = async (subreddit) => {
       const [elapsedSec, elapsedNanos] = process.hrtime(lastTime);
       lastTime = process.hrtime();
       const elapsedTime = (elapsedSec * 1e3 + elapsedNanos / 1e6) / 1e3;
-      console.log(`${(100 / elapsedTime).toFixed(2)} items per second`);
-      console.log(`${((counter / submissions.length) * 100).toFixed(2)}%`);
+      console.log(
+        `${((counter / submissions.length) * 100).toFixed(
+          2
+        )}% parsing submissions (${(100 / elapsedTime).toFixed(2)} items/sec)`
+      );
     }
 
     if (
