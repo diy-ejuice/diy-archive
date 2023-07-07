@@ -36,8 +36,46 @@ const createSubmissionPages = async ({ actions, graphql, reporter }) => {
   reporter.info(`Created ${counter} submission pages!`);
 };
 
+const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
+  const component = resolve(`src/components/submissionList.js`);
+  const { createPage } = actions;
+  const result = await graphql(`
+    query {
+      allSubmissionsJson {
+        nodes {
+          jsonId
+        }
+      }
+    }
+  `);
+
+  if (result.errors) {
+    reporter.panicOnBuild('Error while running GraphQL query.');
+    return;
+  }
+
+  const subsPerPage = 20;
+  const pageCount = Math.ceil(
+    result.data.allSubmissionsJson.nodes.length / subsPerPage
+  );
+
+  for (let i = 0; i < pageCount; i++) {
+    createPage({
+      context: {
+        limit: subsPerPage,
+        skip: i * subsPerPage
+      },
+      path: `/new/${i + 1}`,
+      component
+    });
+  }
+
+  reporter.info(`Created ${pageCount} submission list pages!`);
+};
+
 exports.createPages = async (options) => {
   await createSubmissionPages(options);
+  await createSubmissionListPages(options);
 };
 
 exports.onCreateWebpackConfig = ({ actions }) => {

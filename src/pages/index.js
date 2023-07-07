@@ -17,7 +17,7 @@ export default function IndexPage({ data }) {
       <Container>
         <Row>
           <Col xs={12}>
-            <SubmissionList submissions={submissions} />
+            <SubmissionList data={{ submissions }} />
           </Col>
         </Row>
       </Container>

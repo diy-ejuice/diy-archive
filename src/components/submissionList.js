@@ -1,11 +1,11 @@
-import { Link } from 'gatsby';
+import { Link, graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 import Flair from 'components/flair';
 import { getSubmissionUrl } from 'utils';
 
-export default function SubmissionList({ submissions }) {
+export default function SubmissionList({ data: { submissions } }) {
   return (
     <ListGroup>
       {submissions.map((submission) => (
@@ -30,5 +30,26 @@ export default function SubmissionList({ submissions }) {
 }
 
 SubmissionList.propTypes = {
-  submissions: PropTypes.arrayOf(PropTypes.object).isRequired
+  data: PropTypes.shape({
+    submissions: PropTypes.arrayOf(PropTypes.object).isRequired
+  }).isRequired
 };
+
+export const pageQuery = graphql`
+  query ($skip: Int!, $limit: Int!) {
+    submissions: allSubmissionsJson(
+      limit: $limit
+      skip: $skip
+      sort: { createdAt: DESC }
+    ) {
+      nodes {
+        jsonId
+        score
+        title
+        author
+        createdAt
+        linkFlair
+      }
+    }
+  }
+`;
