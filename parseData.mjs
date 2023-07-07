@@ -179,7 +179,10 @@ const splitData = async (subreddit) => {
       console.log(`${((counter / submissions.length) * 100).toFixed(2)}%`);
     }
 
-    if (!submission.id) {
+    if (
+      !submission.id ||
+      existsSync(`./data/submissions/${submission.id}.json`)
+    ) {
       continue;
     }
 
