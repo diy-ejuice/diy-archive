@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faExternalLink } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import { format, formatDistanceToNow } from 'date-fns';
@@ -9,6 +9,7 @@ import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import Layout from './layout';
 import Comment from './comment';
 import Flair from './flair';
+import Score from './score';
 
 export default function Submission({ data }) {
   const { submissionsJson: submission } = data;
@@ -24,12 +25,7 @@ export default function Submission({ data }) {
                   xs={1}
                   className="d-flex justify-content-center align-items-center"
                 >
-                  <FontAwesomeIcon
-                    color="#FF5700"
-                    icon={faArrowUp}
-                    fixedWidth
-                  />{' '}
-                  {submission.score}
+                  <Score score={submission.score} />
                 </Col>
                 <Col xs={11}>
                   <Row>

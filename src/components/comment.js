@@ -1,4 +1,4 @@
-import { faLink, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { format, formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
@@ -7,15 +7,13 @@ import ReactMarkdown from 'react-markdown';
 
 import { getSubmissionUrl } from 'utils';
 import Flair from './flair';
+import Score from './score';
 
 export default function Comment({ comment, submission }) {
   return (
     <Card body className="mb-2">
       <Card.Title className="small">
-        <span className="me-2">
-          <FontAwesomeIcon color="#FF5700" icon={faArrowUp} fixedWidth />{' '}
-          {comment.score} points
-        </span>
+        <Score className="me-1" score={comment.score} suffix="points" />
         <span
           id={comment.id}
           title={format(comment.createdAt * 1e3, 'yyyy-MM-dd HH:mm:ss')}

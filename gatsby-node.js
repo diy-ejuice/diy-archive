@@ -1,5 +1,5 @@
 const { resolve } = require('path');
-const { getSubmissionUrl } = require('./src/utils');
+const { subsPerPage, getSubmissionUrl } = require('./src/utils');
 
 const createSubmissionPages = async ({ actions, graphql, reporter }) => {
   const component = resolve(`src/components/submission.js`);
@@ -54,18 +54,17 @@ const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
     return;
   }
 
-  const subsPerPage = 20;
   const pageCount = Math.ceil(
     result.data.allSubmissionsJson.nodes.length / subsPerPage
   );
 
-  for (let i = 0; i < pageCount; i++) {
+  for (let i = 1; i < pageCount; i++) {
     createPage({
       context: {
         limit: subsPerPage,
         skip: i * subsPerPage
       },
-      path: `/new/${i + 1}`,
+      path: `/new/${i}`,
       component
     });
   }

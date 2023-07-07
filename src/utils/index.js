@@ -1,3 +1,8 @@
+const countReplies = ({ replies }, count = 0) =>
+  count + countReplies(replies, count);
+
 module.exports = {
-  getSubmissionUrl: ({ jsonId }) => `/submission/${jsonId}`
+  subsPerPage: 20,
+  getSubmissionUrl: ({ jsonId }) => `/submission/${jsonId}`,
+  countComments: ({ comments }) => comments.length + countReplies(comments)
 };

@@ -2,53 +2,26 @@ import { Link, graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Container
-} from 'react-bootstrap';
+import { Button, Row, Col, Container } from 'react-bootstrap';
 
-import Flair from 'components/flair';
-import { getSubmissionUrl } from 'utils';
-import Layout from './layout';
+import Layout from 'components/layout';
+import Submissions from 'components/submissions';
+import { subsPerPage } from 'utils';
 
 export default function SubmissionList({
   data: {
     submissions: { nodes: submissions }
-  }
+  },
+  pageContext: { skip }
 }) {
-  const pageIndex = parseInt(
-    window.location.href.substring(window.location.href.lastIndexOf('/') + 1),
-    10
-  );
+  const pageIndex = skip / subsPerPage;
 
   return (
     <Layout>
       <Container>
         <Row>
           <Col xs={12}>
-            <ListGroup>
-              {submissions.map((submission) => (
-                <ListGroupItem key={submission.id}>
-                  <Row>
-                    <Col xs={1}>
-                      <Flair
-                        text={submission.linkFlair}
-                        color={submission.linkFlairColor}
-                      />
-                    </Col>
-                    <Col xs={11}>
-                      <Link to={getSubmissionUrl(submission)}>
-                        {submission.title} by {submission.author}
-                      </Link>
-                    </Col>
-                  </Row>
-                </ListGroupItem>
-              ))}
-            </ListGroup>
+            <Submissions submissions={submissions} />
           </Col>
         </Row>
         <Row className="mt-2">
@@ -78,7 +51,8 @@ export default function SubmissionList({
 SubmissionList.propTypes = {
   data: PropTypes.shape({
     submissions: PropTypes.arrayOf(PropTypes.object).isRequired
-  }).isRequired
+  }).isRequired,
+  pageContext: PropTypes.object.isRequired
 };
 
 export const pageQuery = graphql`

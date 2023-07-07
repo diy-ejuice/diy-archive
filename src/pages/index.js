@@ -2,19 +2,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Link, graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  ListGroup,
-  ListGroupItem
-} from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import SEO from 'components/seo';
 import Layout from 'components/layout';
-import Flair from 'components/flair';
-import { getSubmissionUrl } from 'utils';
+import Submissions from 'components/submissions';
 
 export default function IndexPage({ data }) {
   const {
@@ -27,25 +19,7 @@ export default function IndexPage({ data }) {
       <Container>
         <Row>
           <Col xs={12}>
-            <ListGroup>
-              {submissions.map((submission) => (
-                <ListGroupItem key={submission.id}>
-                  <Row>
-                    <Col xs={1}>
-                      <Flair
-                        text={submission.linkFlair}
-                        color={submission.linkFlairColor}
-                      />
-                    </Col>
-                    <Col xs={11}>
-                      <Link to={getSubmissionUrl(submission)}>
-                        {submission.title} by {submission.author}
-                      </Link>
-                    </Col>
-                  </Row>
-                </ListGroupItem>
-              ))}
-            </ListGroup>
+            <Submissions submissions={submissions} />
           </Col>
           <Col xs={12} className="d-flex justify-content-end mt-2">
             <Link to="/new/1">
