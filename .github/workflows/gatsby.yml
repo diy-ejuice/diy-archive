@@ -84,15 +84,6 @@ jobs:
           key: ${{ runner.os }}-data
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-      - name: Parse data
-        run: ${{ steps.detect-package-manager.outputs.manager }} run parse
-      - name: Save parsed data
-        id: cache-data-save
-        uses: actions/cache/save@v3
-        with:
-          path: |
-            data
-          key: ${{ steps.cache-data-restore.outputs.cache-primary-key }}
       - name: Build with Gatsby
         env:
           PREFIX_PATHS: 'true'
