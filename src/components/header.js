@@ -1,11 +1,22 @@
-import { Link } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import PropTypes from 'prop-types';
-import { Fragment } from 'react';
-import { Container, Navbar, Nav } from 'react-bootstrap';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
+import { Fragment, useCallback, useState } from 'react';
+import { Form, Container, Navbar, Nav, Button } from 'react-bootstrap';
+import { faBook, faClock, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { getSubmissionUrl } from 'utils';
+
 export default function Header({ siteTitle = '' }) {
+  const [submissionId, setSubmissionId] = useState(null);
+  const handleGo = useCallback(() => {
+    if (!submissionId) {
+      return;
+    }
+
+    navigate(getSubmissionUrl({ jsonId: submissionId }));
+  }, []);
+
   return (
     <Fragment>
       <Navbar variant="dark" bg="primary" expand="lg">
@@ -17,7 +28,26 @@ export default function Header({ siteTitle = '' }) {
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse>
-            <Nav className="ms-auto">
+            <Nav>
+              <Nav.Link as={Link} to="/new">
+                <FontAwesomeIcon icon={faClock} fixedWidth /> New
+              </Nav.Link>
+              <Nav.Link as={Link} to="/top">
+                <FontAwesomeIcon icon={faStar} fixedWidth /> Top
+              </Nav.Link>
+            </Nav>
+            <Form className="d-flex ms-auto me-2">
+              <Form.Control
+                type="text"
+                className="me-2"
+                placeholder="post id (e.g. '3npyqv')"
+                onChange={(event) => setSubmissionId(event.target.value)}
+              />
+              <Button onClick={handleGo} variant="success">
+                Go
+              </Button>
+            </Form>
+            <Nav>
               <Nav.Link href="https://diyejuice.org">
                 <FontAwesomeIcon icon={faBook} fixedWidth /> DIY Compendium
               </Nav.Link>

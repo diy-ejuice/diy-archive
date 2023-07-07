@@ -37,7 +37,6 @@ const createSubmissionPages = async ({ actions, graphql, reporter }) => {
 };
 
 const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
-  const component = resolve(`src/components/submissionList.js`);
   const { createPage } = actions;
   const result = await graphql(`
     query {
@@ -54,19 +53,22 @@ const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
     return;
   }
 
+  const pages = ['new', 'top'];
   const pageCount = Math.ceil(
     result.data.allSubmissionsJson.nodes.length / subsPerPage
   );
 
-  for (let i = 1; i < pageCount; i++) {
-    createPage({
-      context: {
-        limit: subsPerPage,
-        skip: i * subsPerPage
-      },
-      path: `/new/${i}`,
-      component
-    });
+  for (const page of pages) {
+    for (let i = 1; i < pageCount; i++) {
+      createPage({
+        context: {
+          limit: subsPerPage,
+          skip: i * subsPerPage
+        },
+        path: i === 1 ? `/${page}` : `/${page}/${i}`,
+        component: resolve(`src/components/${page}Submissions.js`)
+      });
+    }
   }
 
   reporter.info(`Created ${pageCount} submission list pages!`);
