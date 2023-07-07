@@ -13,9 +13,9 @@
     "url": "git@github.com:diy-ejuice/diy-compendium.git"
   },
   "scripts": {
-    "build": "gatsby build",
+    "build": "node parseData.mjs && gatsby build",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "start": "cross-env GATSBY_CONCURRENT_FILES=1200 NODE_OPTIONS=--max-old-space-size=4096 gatsby develop",
+    "start": "gatsby develop",
     "serve": "gatsby serve",
     "lint": "npm run lint:js && npm run lint:markdown",
     "lint:js": "eslint ./src/",
