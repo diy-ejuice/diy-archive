@@ -12,7 +12,8 @@ const { readFile, writeFile } = jsonfile;
 
 const transformSubmission = ({
   author,
-  authorFlairText: authorFlair,
+  author_flair_text: authorFlair,
+  author_flair_background_color: authorFlairColor,
   created_utc: createdAt,
   edited,
   id,
@@ -29,6 +30,7 @@ const transformSubmission = ({
   const result = {
     author,
     authorFlair,
+    authorFlairColor,
     createdAt: parseInt(createdAt, 10),
     edited: edited === false ? null : parseInt(edited, 10),
     id,
@@ -140,13 +142,13 @@ const splitData = async (subreddit) => {
 
   // fill maps with comment data
   for (const comment of comments) {
-    const { id, parent_id: parentId } = comment;
+    const { id, body, parent_id: parentId } = comment;
 
     if (++counter % 1000 === 0) {
       console.log(`${((counter / comments.length) * 100).toFixed(2)}%`);
     }
 
-    if (!id) {
+    if (!id || body === '[deleted]') {
       continue;
     }
 
@@ -181,7 +183,9 @@ const splitData = async (subreddit) => {
 
     if (
       !submission.id ||
-      existsSync(`./data/submissions/${submission.id}.json`)
+      existsSync(`./data/submissions/${submission.id}.json`) ||
+      submission.score < 10 ||
+      submissionMap.get(`t3_${submission.id}`)?.length === 0
     ) {
       continue;
     }
