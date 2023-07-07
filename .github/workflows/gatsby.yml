@@ -66,7 +66,7 @@ jobs:
           #
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: gatsby
-      - name: Restore cache
+      - name: Restore Gatsby cache
         uses: actions/cache@v3
         with:
           path: |
@@ -75,8 +75,24 @@ jobs:
           key: ${{ runner.os }}-gatsby-build-${{ hashFiles('public') }}
           restore-keys: |
             ${{ runner.os }}-gatsby-build-
+      - name: Restore data cache
+        id: cache-data-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            data
+          key: ${{ runner.os }}-data
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Parse data
+        run: ${{ steps.detect-package-manager.outputs.manager }} run parse
+      - name: Save parsed data
+        id: cache-data-save
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            data
+          key: ${{ steps.cache-data-restore.outputs.cache-primary-key }}
       - name: Build with Gatsby
         env:
           PREFIX_PATHS: 'true'
