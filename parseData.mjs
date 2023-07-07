@@ -130,6 +130,8 @@ const fetchArchiveData = async (subreddit) => {
 };
 
 const splitData = async (subreddit) => {
+  await mkdirp('./data/submissions');
+
   // read static data
   const { submissions, comments } = await fetchArchiveData(subreddit);
 
