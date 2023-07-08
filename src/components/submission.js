@@ -4,15 +4,21 @@ import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import { format, formatDistanceToNow } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 
 import Layout from './layout';
 import Comment from './comment';
 import Flair from './flair';
 import Score from './score';
+import { useState } from 'react';
 
 export default function Submission({ data }) {
   const { submissionsJson: submission } = data;
+  const [sortKey, setSortKey] = useState('score');
+
+  if (submission.comments) {
+    submission.comments.sort((a, b) => b[sortKey] - a[sortKey]);
+  }
 
   return (
     <Layout>
@@ -79,12 +85,34 @@ export default function Submission({ data }) {
           </Container>
         </Card>
         <Card body>
-          <Card.Title>Comments</Card.Title>
+          <Card.Title>
+            <Container fluid>
+              <Row>
+                <Col xs={8} className="d-flex align-items-center">
+                  Comments
+                </Col>
+                <Col xs={4} className="d-flex justify-content-end">
+                  <Form>
+                    <Form.Group className="d-flex align-items-center">
+                      <span className="me-2">Sort</span>
+                      <Form.Select
+                        onChange={(event) => setSortKey(event.target.value)}
+                      >
+                        <option value="score">Score</option>
+                        <option value="createdAt">Age</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Form>
+                </Col>
+              </Row>
+            </Container>
+          </Card.Title>
           {submission.comments.map((comment) => (
             <Comment
               key={comment.id}
               comment={comment}
               submission={submission}
+              sortKey={sortKey}
             />
           ))}
         </Card>

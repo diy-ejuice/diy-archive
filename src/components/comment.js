@@ -9,7 +9,11 @@ import { getSubmissionUrl } from 'utils';
 import Flair from './flair';
 import Score from './score';
 
-export default function Comment({ comment, submission }) {
+export default function Comment({ comment, submission, sortKey }) {
+  if (comment.replies) {
+    comment.replies.sort((a, b) => b[sortKey] - a[sortKey]);
+  }
+
   return (
     <Card body className="mb-2">
       <Card.Title className="small">
@@ -35,7 +39,12 @@ export default function Comment({ comment, submission }) {
       <ReactMarkdown>{comment.body}</ReactMarkdown>
       {Boolean(comment.replies) &&
         comment.replies.map((reply) => (
-          <Comment key={reply.id} comment={reply} submission={submission} />
+          <Comment
+            key={reply.id}
+            comment={reply}
+            submission={submission}
+            sortKey={sortKey}
+          />
         ))}
     </Card>
   );
@@ -43,5 +52,6 @@ export default function Comment({ comment, submission }) {
 
 Comment.propTypes = {
   comment: PropTypes.object.isRequired,
-  submission: PropTypes.object.isRequired
+  submission: PropTypes.object.isRequired,
+  sortKey: PropTypes.string.isRequired
 };
