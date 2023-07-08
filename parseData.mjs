@@ -167,33 +167,26 @@ const splitData = async (subreddit) => {
       submissionMap.get(parentId).push(transformComment(comment));
     } else if (parentId.startsWith('t1_')) {
       // the parent is a comment
-      parentChildMap.set(id, parentId);
+      if (!parentChildMap.has(parentId)) {
+        parentChildMap.set(parentId, []);
+      }
+
+      parentChildMap.get(parentId).push(id);
     }
   }
 
   counter = 0;
-  let lastTime = process.hrtime();
-
-  const parentChildList = Array.from(parentChildMap.entries());
 
   for (const submission of submissions) {
     if (++counter % 100 === 0) {
-      const [elapsedSec, elapsedNanos] = process.hrtime(lastTime);
-      lastTime = process.hrtime();
-      const elapsedTime = (elapsedSec * 1e3 + elapsedNanos / 1e6) / 1e3;
       console.log(
         `${((counter / submissions.length) * 100).toFixed(
           2
-        )}% parsing submissions (${(100 / elapsedTime).toFixed(2)} items/sec)`
+        )}% parsing submissions`
       );
     }
 
-    if (
-      !submission.id ||
-      existsSync(`./data/submissions/${submission.id}.json`) ||
-      submission.score < 10 ||
-      submissionMap.get(`t3_${submission.id}`)?.length === 0
-    ) {
+    if (!submission.id) {
       continue;
     }
 
@@ -201,9 +194,9 @@ const splitData = async (subreddit) => {
       innerComments.map((innerComment) => ({
         ...innerComment,
         replies: recurseReplies(
-          parentChildList
-            .filter(([, parentId]) => parentId === `t1_${innerComment.id}`)
-            .map(([childId]) => transformComment(commentMap.get(childId)))
+          (parentChildMap.get(`t1_${innerComment.id}`) ?? []).map((childId) =>
+            transformComment(commentMap.get(childId))
+          )
         )
       }));
 
