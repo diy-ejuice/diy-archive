@@ -4,8 +4,9 @@ import { ListGroup, ListGroupItem, Row, Col } from 'react-bootstrap';
 import { format, formatDistanceToNow } from 'date-fns';
 
 import Flair from 'components/flair';
-import { getSubmissionUrl } from 'utils';
-import Score from './score';
+import Score from 'components/score';
+import CommentCount from 'components/commentCount';
+import { countComments, getSubmissionUrl } from 'utils';
 
 export default function Submissions({ submissions }) {
   return (
@@ -13,11 +14,15 @@ export default function Submissions({ submissions }) {
       {submissions.map((submission) => (
         <ListGroupItem key={submission.jsonId}>
           <Row>
-            <Col
-              xs={1}
-              className="d-flex justify-content-center align-items-center"
-            >
-              <Score score={submission.score} />
+            <Col xs={1}>
+              <Row>
+                <Col xs={6}>
+                  <Score score={submission.score} />
+                </Col>
+                <Col xs={6}>
+                  <CommentCount count={countComments(submission)} />
+                </Col>
+              </Row>
             </Col>
             <Col xs={11}>
               <p className="mb-1">
@@ -26,7 +31,7 @@ export default function Submissions({ submissions }) {
                   color={submission.linkFlairColor}
                 />
                 <Link to={getSubmissionUrl(submission)}>
-                  {submission.title} by {submission.author}
+                  {submission.title}
                 </Link>
               </p>
               <p className="small mb-0">
@@ -39,7 +44,8 @@ export default function Submissions({ submissions }) {
                 >
                   {formatDistanceToNow(submission.createdAt * 1e3, {
                     addSuffix: true
-                  })}
+                  })}{' '}
+                  by {submission.author}
                 </span>
               </p>
             </Col>

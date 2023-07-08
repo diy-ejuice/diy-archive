@@ -15,7 +15,7 @@ export default function Header({ siteTitle = '' }) {
     }
 
     navigate(getSubmissionUrl({ jsonId: submissionId }));
-  }, []);
+  }, [submissionId]);
 
   return (
     <Fragment>

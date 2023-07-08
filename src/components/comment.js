@@ -13,8 +13,9 @@ export default function Comment({ comment, submission }) {
   return (
     <Card body className="mb-2">
       <Card.Title className="small">
-        <Score className="me-1" score={comment.score} suffix="points" />
+        <Score score={comment.score} suffix="points" />
         <span
+          className="ms-1"
           id={comment.id}
           title={format(comment.createdAt * 1e3, 'yyyy-MM-dd HH:mm:ss')}
         >

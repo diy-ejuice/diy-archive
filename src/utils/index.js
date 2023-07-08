@@ -1,8 +1,11 @@
-const countReplies = ({ replies }, count = 0) =>
-  count + countReplies(replies, count);
+const countReplies = (replies) =>
+  Array.isArray(replies)
+    ? replies.reduce((prev, curr) => prev + countReplies(curr.replies), 1)
+    : 0;
 
 module.exports = {
   subsPerPage: 20,
   getSubmissionUrl: ({ jsonId }) => `/submission/${jsonId}`,
-  countComments: ({ comments }) => comments.length + countReplies(comments)
+  countComments: ({ comments }) =>
+    comments.reduce((prev, curr) => prev + countReplies(curr.replies), 1)
 };

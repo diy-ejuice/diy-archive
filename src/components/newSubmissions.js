@@ -54,6 +54,18 @@ export const pageQuery = graphql`
         author
         createdAt
         linkFlair
+        comments {
+          id
+          replies {
+            id
+            replies {
+              id
+              replies {
+                id
+              }
+            }
+          }
+        }
       }
     }
   }

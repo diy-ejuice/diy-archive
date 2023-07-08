@@ -33,7 +33,9 @@ export default function TopSubmissions({
 
 TopSubmissions.propTypes = {
   data: PropTypes.shape({
-    submissions: PropTypes.arrayOf(PropTypes.object).isRequired
+    submissions: PropTypes.shape({
+      nodes: PropTypes.arrayOf(PropTypes.object).isRequired
+    }).isRequired
   }).isRequired,
   pageContext: PropTypes.object.isRequired
 };
@@ -52,6 +54,18 @@ export const pageQuery = graphql`
         author
         createdAt
         linkFlair
+        comments {
+          id
+          replies {
+            id
+            replies {
+              id
+              replies {
+                id
+              }
+            }
+          }
+        }
       }
     }
   }
