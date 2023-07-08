@@ -53,21 +53,40 @@ const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
     return;
   }
 
-  const pages = ['new', 'top'];
+  const flairs = ['Recipe', 'Flavors', 'Mixing'];
+  const pages = ['new', 'top', 'flair'];
   const pageCount = Math.ceil(
     result.data.allSubmissionsJson.nodes.length / subsPerPage
   );
 
   for (const page of pages) {
     for (let i = 1; i < pageCount; i++) {
-      createPage({
-        context: {
-          limit: subsPerPage,
-          skip: i * subsPerPage
-        },
-        path: i === 1 ? `/${page}` : `/${page}/${i}`,
-        component: resolve(`src/components/${page}Submissions.js`)
-      });
+      const context = {
+        limit: subsPerPage,
+        skip: i * subsPerPage
+      };
+
+      if (page === 'flair') {
+        for (const flair of flairs) {
+          createPage({
+            context: {
+              ...context,
+              flair
+            },
+            path:
+              i === 1
+                ? `/${page}/${flair.toLowerCase()}`
+                : `/${page}/${flair.toLowerCase()}/${i}`,
+            component: resolve(`src/components/${page}Submissions.js`)
+          });
+        }
+      } else {
+        createPage({
+          context,
+          path: i === 1 ? `/${page}` : `/${page}/${i}`,
+          component: resolve(`src/components/${page}Submissions.js`)
+        });
+      }
     }
   }
 

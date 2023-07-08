@@ -1,8 +1,20 @@
 import { Link, navigate } from 'gatsby';
 import PropTypes from 'prop-types';
 import { Fragment, useCallback, useState } from 'react';
-import { Form, Container, Navbar, Nav, Button } from 'react-bootstrap';
-import { faBook, faClock, faStar } from '@fortawesome/free-solid-svg-icons';
+import {
+  Form,
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  Dropdown
+} from 'react-bootstrap';
+import {
+  faBook,
+  faClock,
+  faListDots,
+  faStar
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getSubmissionUrl } from 'utils';
@@ -35,6 +47,22 @@ export default function Header({ siteTitle = '' }) {
               <Nav.Link as={Link} to="/top">
                 <FontAwesomeIcon icon={faStar} fixedWidth /> Top
               </Nav.Link>
+              <Dropdown as={Nav.Item}>
+                <Dropdown.Toggle as={Nav.Link}>
+                  <FontAwesomeIcon icon={faListDots} fixedWidth /> Flair
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="/flair/recipe">
+                    Recipes
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/flair/flavors">
+                    Flavors
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/flair/mixing">
+                    Mixing
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Nav>
             <Form className="d-flex ms-auto me-2">
               <Form.Control
