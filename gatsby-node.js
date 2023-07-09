@@ -65,7 +65,7 @@ const createFlairPages = async ({ actions, graphql, reporter }) => {
 
     counter += pageCount;
 
-    for (let i = 1; i < pageCount; i++) {
+    for (let i = 0; i < pageCount; i++) {
       createPage({
         context: {
           limit: subsPerPage,
