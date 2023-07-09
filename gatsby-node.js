@@ -36,6 +36,54 @@ const createSubmissionPages = async ({ actions, graphql, reporter }) => {
   reporter.info(`Created ${counter} submission pages!`);
 };
 
+const createFlairPages = async ({ actions, graphql, reporter }) => {
+  const component = resolve(`src/components/flairSubmissions.js`);
+  const { createPage } = actions;
+  const flairs = ['Recipe', 'FOTW', 'Vendor', 'Weekly', 'Other'];
+
+  let counter = 0;
+
+  for (const flair of flairs) {
+    const result = await graphql(`
+      query {
+        allSubmissionsJson(filter: { linkFlair: { eq: "${flair}" } }) {
+          nodes {
+            jsonId
+          }
+        }
+      }
+    `);
+
+    if (result.errors) {
+      reporter.panicOnBuild('Error while running GraphQL query.');
+      return;
+    }
+
+    const pageCount = Math.ceil(
+      result.data.allSubmissionsJson.nodes.length / subsPerPage
+    );
+
+    counter += pageCount;
+
+    for (let i = 1; i < pageCount; i++) {
+      createPage({
+        context: {
+          limit: subsPerPage,
+          skip: i * subsPerPage,
+          flair
+        },
+        path:
+          i === 1
+            ? `/flair/${flair.toLowerCase()}`
+            : `/flair/${flair.toLowerCase()}/${i}`,
+        component
+      });
+    }
+  }
+
+  reporter.info(`Created ${counter} flair list pages!`);
+};
+
 const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
   const result = await graphql(`
@@ -53,40 +101,21 @@ const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
     return;
   }
 
-  const flairs = ['Recipe', 'Flavors', 'Mixing'];
-  const pages = ['new', 'top', 'flair'];
+  const pages = ['new', 'top'];
   const pageCount = Math.ceil(
     result.data.allSubmissionsJson.nodes.length / subsPerPage
   );
 
   for (const page of pages) {
     for (let i = 1; i < pageCount; i++) {
-      const context = {
-        limit: subsPerPage,
-        skip: i * subsPerPage
-      };
-
-      if (page === 'flair') {
-        for (const flair of flairs) {
-          createPage({
-            context: {
-              ...context,
-              flair
-            },
-            path:
-              i === 1
-                ? `/${page}/${flair.toLowerCase()}`
-                : `/${page}/${flair.toLowerCase()}/${i}`,
-            component: resolve(`src/components/${page}Submissions.js`)
-          });
-        }
-      } else {
-        createPage({
-          context,
-          path: i === 1 ? `/${page}` : `/${page}/${i}`,
-          component: resolve(`src/components/${page}Submissions.js`)
-        });
-      }
+      createPage({
+        context: {
+          limit: subsPerPage,
+          skip: i * subsPerPage
+        },
+        path: i === 1 ? `/${page}` : `/${page}/${i}`,
+        component: resolve(`src/components/${page}Submissions.js`)
+      });
     }
   }
 
@@ -94,6 +123,7 @@ const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
 };
 
 exports.createPages = async (options) => {
+  await createFlairPages(options);
   await createSubmissionPages(options);
   await createSubmissionListPages(options);
 };

@@ -55,11 +55,17 @@ export default function Header({ siteTitle = '' }) {
                   <Dropdown.Item as={Link} to="/flair/recipe">
                     Recipes
                   </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/flair/flavors">
-                    Flavors
+                  <Dropdown.Item as={Link} to="/flair/vendor">
+                    Vendors
                   </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/flair/mixing">
-                    Mixing
+                  <Dropdown.Item as={Link} to="/flair/fotw">
+                    FOTW
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/flair/weekly">
+                    Weekly Posts
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/flair/other">
+                    Other
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
