@@ -73,7 +73,7 @@ const createFlairPages = async ({ actions, graphql, reporter }) => {
           flair
         },
         path:
-          i === 1
+          i === 0
             ? `/flair/${flair.toLowerCase()}`
             : `/flair/${flair.toLowerCase()}/${i}`,
         component
@@ -107,13 +107,13 @@ const createSubmissionListPages = async ({ actions, graphql, reporter }) => {
   );
 
   for (const page of pages) {
-    for (let i = 1; i < pageCount; i++) {
+    for (let i = 0; i < pageCount; i++) {
       createPage({
         context: {
           limit: subsPerPage,
           skip: i * subsPerPage
         },
-        path: i === 1 ? `/${page}` : `/${page}/${i}`,
+        path: i === 0 ? `/${page}` : `/${page}/${i}`,
         component: resolve(`src/components/${page}Submissions.js`)
       });
     }
