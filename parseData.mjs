@@ -186,7 +186,7 @@ const splitData = async (subreddit) => {
       );
     }
 
-    if (!submission.id) {
+    if (!submission.id || submission.score < 10) {
       continue;
     }
 
