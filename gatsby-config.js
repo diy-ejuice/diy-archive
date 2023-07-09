@@ -18,32 +18,6 @@ const gtagOptions = {
   anonymize: true
 };
 
-const remarkPlugins = [
-  {
-    resolve: 'gatsby-remark-external-links',
-    options: {
-      target: '_blank',
-      rel: 'noopener noreferrer'
-    }
-  },
-  {
-    resolve: `gatsby-remark-images`,
-    options: {
-      maxWidth: 800
-    }
-  },
-  {
-    resolve: 'gatsby-remark-classes',
-    options: {
-      classMap: {
-        table: 'table table-striped'
-      }
-    }
-  },
-  'gatsby-remark-autolink-headers',
-  'gatsby-remark-numbered-footnotes'
-];
-
 module.exports = {
   trailingSlash: 'never',
   siteMetadata: {
@@ -54,14 +28,14 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: 'gatsby-source-filesystem-with-queue',
+      resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
         path: `${__dirname}/src/images`
       }
     },
     {
-      resolve: 'gatsby-source-filesystem-with-queue',
+      resolve: 'gatsby-source-filesystem',
       options: {
         name: 'data',
         path: `${__dirname}/data`
@@ -83,12 +57,6 @@ module.exports = {
     'gatsby-plugin-sharp',
     'gatsby-plugin-sitemap',
     'gatsby-transformer-json',
-    'gatsby-transformer-sharp',
-    {
-      resolve: 'gatsby-transformer-remark',
-      options: {
-        plugins: remarkPlugins
-      }
-    }
+    'gatsby-transformer-sharp'
   ]
 };
