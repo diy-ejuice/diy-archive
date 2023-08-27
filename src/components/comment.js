@@ -8,8 +8,11 @@ import ReactMarkdown from 'react-markdown';
 import { getSubmissionUrl } from 'utils';
 import Flair from './flair';
 import Score from './score';
+import { useGeoPattern } from 'react-geopattern';
 
 export default function Comment({ comment, submission, sortKey }) {
+  const pattern = useGeoPattern(comment.author);
+
   if (comment.replies) {
     comment.replies.sort((a, b) => b[sortKey] - a[sortKey]);
   }
@@ -17,6 +20,19 @@ export default function Comment({ comment, submission, sortKey }) {
   return (
     <Card body className="mb-2">
       <Card.Title className="small">
+        <div
+          style={{
+            display: 'inline-block',
+            borderRadius: 8,
+            height: 20,
+            width: 48,
+            marginLeft: 4,
+            marginRight: 4,
+            backgroundImage: pattern.toDataUrl()
+          }}
+        >
+          &nbsp;
+        </div>
         <Score score={comment.score} suffix="points" />
         <span
           className="ms-1"
