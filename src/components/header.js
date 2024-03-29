@@ -82,7 +82,7 @@ export default function Header({ siteTitle = '' }) {
               </Button>
             </Form>
             <Nav>
-              <Nav.Link href="https://diyejuice.org">
+              <Nav.Link href="https://ejoose.org">
                 <FontAwesomeIcon icon={faBook} fixedWidth /> DIY Compendium
               </Nav.Link>
             </Nav>

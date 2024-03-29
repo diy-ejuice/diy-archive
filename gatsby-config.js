@@ -24,7 +24,7 @@ module.exports = {
     title: 'DIY Archive',
     author: 'ayan4m1',
     description: 'An archive of /r/DIY_eJuice.',
-    siteUrl: 'https://archive.diyejuice.org/'
+    siteUrl: 'https://archive.ejoose.org/'
   },
   plugins: [
     {
