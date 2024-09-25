@@ -127,11 +127,3 @@ exports.createPages = async (options) => {
   await createSubmissionPages(options);
   await createSubmissionListPages(options);
 };
-
-exports.onCreateWebpackConfig = ({ actions }) => {
-  actions.setWebpackConfig({
-    resolve: {
-      modules: [resolve(__dirname, 'src'), 'node_modules']
-    }
-  });
-};

@@ -49,7 +49,13 @@ module.exports = {
       resolve: 'gatsby-plugin-gtag',
       options: gtagOptions
     },
-    'gatsby-plugin-eslint',
+    {
+      resolve: 'gatsby-plugin-eslint',
+      options: {
+        configType: 'flat',
+        eslintPath: 'eslint/use-at-your-own-risk'
+      }
+    },
     'gatsby-plugin-image',
     'gatsby-plugin-offline',
     'gatsby-plugin-react-helmet',
@@ -57,6 +63,7 @@ module.exports = {
     'gatsby-plugin-sharp',
     'gatsby-plugin-sitemap',
     'gatsby-transformer-json',
-    'gatsby-transformer-sharp'
+    'gatsby-transformer-sharp',
+    '@ayan4m1/gatsby-plugin-root-import'
   ]
 };
