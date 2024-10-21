@@ -2,8 +2,6 @@ import jsonfile from 'jsonfile';
 import { existsSync, createWriteStream } from 'fs';
 import { Transform } from 'stream';
 import { pipeline } from 'stream/promises';
-// eslint-disable-next-line import/no-unresolved
-import got from 'got';
 import { mkdirp } from 'mkdirp';
 import { basename } from 'path';
 import { decompressStream } from 'cppzst';
@@ -97,7 +95,7 @@ const downloadAndExtractArchive = async (url) => {
   }
 
   await pipeline(
-    got.stream(url),
+    (await fetch(url)).body,
     decompressStream(),
     new JsonFixer(),
     createWriteStream(tempFile)
