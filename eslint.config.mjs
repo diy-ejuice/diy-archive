@@ -43,7 +43,7 @@ export default [
     }
   },
   {
-    files: ['gatsby-*.js', 'src/utils/index.js'],
+    files: ['gatsby-*.js', 'parseData.mjs', 'src/utils/index.js'],
     languageOptions: {
       globals: {
         ...globals.node,
