@@ -51,15 +51,19 @@ module.exports = {
     },
     {
       resolve: 'gatsby-plugin-eslint',
-      options: {
-        configType: 'flat',
-        eslintPath: 'eslint/use-at-your-own-risk'
-      }
+      options: { configType: 'flat' }
     },
     'gatsby-plugin-image',
     'gatsby-plugin-offline',
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sass',
+    {
+      resolve: 'gatsby-plugin-sass',
+      options: {
+        sassOptions: {
+          quietDeps: true
+        }
+      }
+    },
     'gatsby-plugin-sharp',
     'gatsby-plugin-sitemap',
     'gatsby-transformer-json',

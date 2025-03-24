@@ -20,6 +20,7 @@ export default function Comment({ comment, submission, sortKey }) {
   return (
     <Card body className="mb-2">
       <Card.Title className="small">
+        <Score score={comment.score} suffix="points" />
         <div
           style={{
             display: 'inline-block',
@@ -33,7 +34,7 @@ export default function Comment({ comment, submission, sortKey }) {
         >
           &nbsp;
         </div>
-        <Score score={comment.score} suffix="points" />
+        by {comment.author}
         <span
           className="ms-1"
           id={comment.id}
@@ -42,8 +43,7 @@ export default function Comment({ comment, submission, sortKey }) {
           {formatDistanceToNow(comment.createdAt * 1e3, {
             addSuffix: true
           })}
-        </span>{' '}
-        by {comment.author}
+        </span>
         <Flair text={comment.authorFlair} color={comment.authorFlairColor} />
         <a
           href={`${getSubmissionUrl(submission)}#${comment.id}`}
