@@ -41,7 +41,7 @@ jobs:
     needs: parse
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -60,20 +60,20 @@ jobs:
       - name: Setup Yarn
         run: corepack enable
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
         with:
           # Automatically inject pathPrefix in your Gatsby configuration file.
           #
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: gatsby
       - name: Restore Gatsby cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             public
@@ -83,7 +83,7 @@ jobs:
             ${{ runner.os }}-gatsby-build-
       - name: Restore data cache
         id: cache-data-restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             data
@@ -95,7 +95,7 @@ jobs:
           PREFIX_PATHS: 'true'
         run: ${{ steps.detect-package-manager.outputs.manager }} run build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./public
 
