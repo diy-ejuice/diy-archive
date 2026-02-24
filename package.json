@@ -32,7 +32,6 @@
     "bootstrap": "^5.3.8",
     "bootswatch": "^5.3.8",
     "classnames": "^2.5.1",
-    "cppzst": "^2.0.12",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "gatsby": "^5.15.0",
@@ -60,7 +59,8 @@
     "react-helmet": "^6.1.0",
     "react-markdown": "10.1.0",
     "sass": "^1.97.3",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "zstd-napi": "^0.0.12"
   },
   "devDependencies": {
     "@ayan4m1/gatsby-plugin-root-import": "^2.0.10",

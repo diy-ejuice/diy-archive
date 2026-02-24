@@ -1,10 +1,10 @@
 import jsonfile from 'jsonfile';
-import { existsSync, createWriteStream } from 'fs';
-import { Transform } from 'stream';
-import { pipeline } from 'stream/promises';
 import { mkdirp } from 'mkdirp';
 import { basename } from 'path';
-import { decompressStream } from 'cppzst';
+import { Transform } from 'stream';
+import { pipeline } from 'stream/promises';
+import { DecompressStream } from 'zstd-napi';
+import { existsSync, createWriteStream } from 'fs';
 
 const { readFile, writeFile } = jsonfile;
 
@@ -96,7 +96,7 @@ const downloadAndExtractArchive = async (url) => {
 
   await pipeline(
     (await fetch(url)).body,
-    decompressStream(),
+    new DecompressStream(),
     new JsonFixer(),
     createWriteStream(tempFile)
   );
