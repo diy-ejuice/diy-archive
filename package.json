@@ -87,7 +87,7 @@
     "prettier": "^3.8.1",
     "stylelint": "^17.0.0",
     "stylelint-config-recommended": "^18.0.0",
-    "webpack": "^5.104.1"
+    "webpack": "^5.105.0"
   },
   "packageManager": "yarn@4.12.0"
 }
